@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <main id="app-root"></main>
+    <script type="text/babel">
+        const Quotes = () => {
+            const [quotes, setQuotes] = React.useState([]);
+
+            // What does this do?
+            // How would I find out?
+            React.useEffect(() => {
+                fetch('http://localhost:3000/api/quotes')
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((newQuotes) => {
+                        setQuotes(newQuotes);
+                    });
+            }, [])
+
+            return (
+                <div>
+                    <h1>Inspirational Quotes of the Day!</h1>
+                    {quotes.map((quoteObj, index) => (
+                        <div key={index}>
+                            <blockquote>{quoteObj.text}</blockquote>
+                            <p>- {quoteObj.author}</p>
+                        </div>
+                ))}
+                    
+                </div>
+            )
+
+        }
+        const root = ReactDOM.createRoot(document.getElementById('app-root'));
+        root.render(<Quotes />);
+    </script>
+</body>
+
+</html>
